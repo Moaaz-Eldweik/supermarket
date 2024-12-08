@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - Supermarket</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/scripts.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Control Panel</h1>
+        <form method="POST" action="/add_product">
+            <h3>Add new product</h3>
+            <input type="text" name="product_name" placeholder="Product Name" required>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+            <button type="submit">Add new product</button>
+        </form>
+
+        <h3>Product List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>procedure</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr class="{{ 'low-stock' if product.quantity < low_stock_threshold }}">
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>
+                        <form method="POST" action="/delete_product/{{ product.name }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="POST" action="/print_invoice">
+            <button type="submit">Print invoice</button>
+            <a href="/" id="link">Log out</a>
+        </form>
+    </div>
+</body>
+</html>
